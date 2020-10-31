@@ -4,7 +4,7 @@
     <title>test task JavaScript advanced</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" /> -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -13,8 +13,8 @@
         <div class="top-cart-info">
             <div class="container top-cart-info-container">
                 <span class="top-cart-info__item">
-                     Товаров в корзине - <span class="red-info">XXX</span>,
-                      на сумму <span class="red-info">XXX</span> грн</span>
+                     Товаров в корзине - <span id="cart-products-qty" class="red-info">XXX</span>,
+                      на сумму <span id="cart-products-price" class="red-info">XXX</span> грн</span>
                 <button class="btn-check">Оформить заказ</button>
             </div>
         </div><!-- /.top-cart-info -->
@@ -34,16 +34,16 @@
             <div class="filter-box">
                 <div class="select-box">
                     <label class="filter-label">Категория</label>
-                    <select class="select-control">
+                    <select class="select-control" id="filter-type">
                         <option value="0">Все</option>
-                        <option value="1">Завтраки</option>
-                        <option  value="2">Первые блюда</option>
-                        <option  value="3">Гарниры</option>
+                        <option value="breakfast">Завтраки</option>
+                        <option  value="first-meal">Первые блюда</option>
+                        <option  value="side-dishes">Гарниры</option>
                     </select>
                 </div><!-- /.select-box -->
                 <div class="price-select-box">
                     <label class="filter-label">Цена</label>
-                    <select class="select-control">
+                    <select class="select-control" id="filter-price">
                         <option value="0">Все</option>
                         <option value="30">До 30 грн</option>
                         <option value="50">До 50 грн</option>
@@ -57,7 +57,7 @@
 
             <div class="products-box grid-box">
 
-                <div class="product-box__item">
+                <div data-type="breakfast" class="product-box__item">
                     <h3 class="product-box__title">Овсяная каша с фруктами</h3>
                     <div class="product-box__img">
                         <img class="img-fluid" src="i/im1.jpg">
@@ -71,7 +71,7 @@
 
                     </div>
                 </div>
-                <div class="product-box__item">
+                <div data-type="breakfast" class="product-box__item">
                     <h3 class="product-box__title">Яичница глазунья с овощами на сковородке</h3>
                     <div class="product-box__img">
                         <img class="img-fluid" src="i/im2.jpg">
@@ -85,7 +85,7 @@
 
                     </div>
                 </div>
-                <div class="product-box__item">
+                <div data-type="side-dishes" class="product-box__item">
                     <h3 class="product-box__title">Сет азербайджанский завтрак</h3>
                     <div class="product-box__img">
                         <img class="img-fluid" src="i/im3.jpg">
@@ -99,7 +99,7 @@
 
                     </div>
                 </div>
-                <div class="product-box__item">
+                <div data-type="breakfast" class="product-box__item">
                     <h3 class="product-box__title">Яичница с помидорами по-бакински</h3>
                     <div class="product-box__img">
                         <img class="img-fluid" src="i/im4.jpg">
@@ -113,7 +113,7 @@
 
                     </div>
                 </div>
-                <div class="product-box__item">
+                <div data-type="breakfast" class="product-box__item">
                     <h3 class="product-box__title">Сырники со сметаной</h3>
                     <div class="product-box__img">
                         <img class="img-fluid" src="i/im5.jpg">
@@ -127,7 +127,7 @@
 
                     </div>
                 </div>
-                <div class="product-box__item">
+                <div data-type="side-dishes" class="product-box__item">
                     <h3 class="product-box__title">Шпинатный крем-суп</h3>
                     <div class="product-box__img">
                         <img class="img-fluid" src="i/im6.jpg">
@@ -141,7 +141,7 @@
 
                     </div>
                 </div>
-                <div class="product-box__item">
+                <div data-type="first-meal" class="product-box__item">
                     <h3 class="product-box__title">Суп Пити</h3>
                     <div class="product-box__img">
                         <img class="img-fluid" src="i/im7.jpg">
@@ -155,7 +155,7 @@
 
                     </div>
                 </div>
-                <div class="product-box__item">
+                <div data-type="first-meal" class="product-box__item">
                     <h3 class="product-box__title">Борщ украинский</h3>
                     <div class="product-box__img">
                         <img class="img-fluid" src="i/im8.jpg">
@@ -169,7 +169,7 @@
 
                     </div>
                 </div>
-                <div class="product-box__item">
+                <div data-type="first-meal" class="product-box__item">
                     <h3 class="product-box__title">Суп Кюфта Бозбаш</h3>
                     <div class="product-box__img">
                         <img class="img-fluid" src="i/im9.jpg">
@@ -183,7 +183,7 @@
 
                     </div>
                 </div>
-                <div class="product-box__item">
+                <div data-type="first-meal" class="product-box__item">
                     <h3 class="product-box__title">Картофель фри</h3>
                     <div class="product-box__img">
                         <img class="img-fluid" src="i/im10.jpg">
@@ -197,7 +197,7 @@
 
                     </div>
                 </div>
-                <div class="product-box__item">
+                <div data-type="side-dishes" class="product-box__item">
                     <h3 class="product-box__title">Картофель по-домашнему</h3>
                     <div class="product-box__img">
                         <img class="img-fluid" src="i/im11.jpg">
@@ -211,7 +211,7 @@
 
                     </div>
                 </div>
-                <div class="product-box__item">
+                <div data-type="side-dishes" class="product-box__item">
                     <h3 class="product-box__title">Рис с овощами</h3>
                     <div class="product-box__img">
                         <img class="img-fluid" src="i/im12.jpg">
@@ -244,7 +244,16 @@
     </footer>
 </div><!-- /.app-container -->
 
+<form class="popup" id="oeder-form">
+    <div class="close">x</div>
+    <input name="email" type="email" placeholder="E-mail">
+    <input name="name" type="text" placeholder="Name">
+    <button class="btn-check" type="submit">Отправить</button>
+</form>
 
+<div class="modal-bg"></div>
+
+<script src="js/tasks.js"></script>
 
 </body>
 </html>
