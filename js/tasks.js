@@ -3,7 +3,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     var orderButton       = document.querySelectorAll('.top-cart-info-container .btn-check')[0];
-    var priductItem       = document.querySelectorAll('.product-box__item')[0];
+    var priductItems      = document.querySelectorAll('.product-box__item');
     var modalBg           = document.querySelectorAll('.modal-bg')[0];
     var body              = document.querySelectorAll('body')[0];
     var closeModalButton  = document.querySelectorAll('.close')[0];
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var filterType        = document.getElementById('filter-type');
     var qtyInputs         = document.querySelectorAll('.qty__item');
     var allInputs         = document.querySelectorAll('input');
-    var addProductButton  = document.querySelectorAll('.product-box__btn');
+    var productsBox       = document.querySelectorAll('.products-box')[0];
     var cartProductsQty   = document.getElementById('cart-products-qty');
     var cartProductsPrice = document.getElementById('cart-products-price');
     var cart = {
@@ -20,35 +20,36 @@ document.addEventListener('DOMContentLoaded', function() {
         price: 0
     }
 
-    Array.prototype.forEach.call(addProductButton, function(item){
-        item.addEventListener("click", function() {
-            var itemInput = this.parentNode.querySelectorAll('.qty__item')[0];
-            var itemValue = itemInput.value;
-            if (itemValue < 0 || itemValue == "") {
-                itemInput.classList.add("error");
+    productsBox.onclick = function(e) {
+        if (!e.target.classList.contains("product-box__btn")) {
+            return false
+        }
+        var itemInput = e.target.parentNode.querySelectorAll('.qty__item')[0];
+        var itemValue = itemInput.value;
+        if (itemValue < 0 || itemValue == "") {
+            itemInput.classList.add("error");
+        }
+        else {
+            calculateQtyPrice();
+            if (cart.qty == 0) {
+                cleanCart();
             }
             else {
-                calculateQtyPrice();
-                if (cart.qty == 0) {
-                    cleanCart();
-                }
-                else {
-                    cartProductsQty.innerHTML = cart.qty;
-                    cartProductsPrice.innerHTML = cart.price;
-                }
+                cartProductsQty.innerHTML = cart.qty;
+                cartProductsPrice.innerHTML = cart.price;
             }
-        });
-    });
+        }
+    };
 
     //Calculate qty and price of products
     function calculateQtyPrice() {
         cart.qty = 0;
         cart.price = 0;
-        Array.prototype.forEach.call(qtyInputs, function(input) {
+        qtyInputs.forEach(function(input) {
             if (input.value > 0) {
                 var priceInput = input.parentNode.parentNode.querySelectorAll('p')[0];
                 var priceInputNumber = priceInput.innerHTML.replace(/\D/g, "")
-                cart.qty += Number(input.value);
+                cart.qty += 1;
                 cart.price += input.value*Number(priceInputNumber);
             }
         });
@@ -57,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
     //Sort by price
     filterPrice.addEventListener("change", function() {
         var chosedPrice = Number(this.value);
-        Array.prototype.forEach.call(priductItem, function(product) {
+        priductItems.forEach(function(product) {
             var productPrice = product.querySelectorAll('.product-box__meta>p')[0];
             var productPriceNumber = Number(productPrice.innerHTML.replace(/\D/g, ""));
             if (productPriceNumber < chosedPrice) {
@@ -75,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
     //Sort by product type
     filterType.addEventListener("change", function() {
         var chosedType = this.value;
-        Array.prototype.forEach.call(priductItem, function(product) {
+        priductItems.forEach(function(product) {
             var productType = product.getAttribute("data-type");
             if (chosedType == productType) {
                 product.classList.remove("hide");
@@ -107,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     //Remove error styles on focus qty input
-    Array.prototype.forEach.call(allInputs, function(item){
+    allInputs.forEach(function(item){
         item.addEventListener("focus", function() {
             this.classList.remove("error");
         });
@@ -124,7 +125,6 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         var email = this.querySelectorAll('input[name="email"]')[0];
         var name = this.querySelectorAll('input[name="name"]')[0];
-        console.log(email.value.trim(), name.value.trim());
         if ((email.value.trim().length > 0) && (name.value.trim().length > 0)) {
             alert('Спасибо за заказ');
             cleanCart();
